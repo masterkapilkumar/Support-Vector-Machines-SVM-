@@ -157,6 +157,20 @@ class MultiClassSVM:
             
             accuracy = 1.0*correct_count/len(data_x)
             return accuracy
+
+class LibSVM:
+    def __init__(self, train_x, train_y, test_x, test_y):
+        self.train_x = train_x.tolist()
+        self.train_y = list(map(float,train_y.tolist()))
+        self.test_x = test_x.tolist()
+        self.test_y = list(map(float,test_y.tolist()))
+        
+    def run(self, params):
+        problem = svm_problem(self.train_y,self.train_x)
+        params = svm_parameter(params)
+
+        model = svm_train(problem, params)
+        svm_predict(self.test_y, self.test_x, model)
         
 def calculate_time_elapsed():
     global start
@@ -212,6 +226,18 @@ if __name__=='__main__':
         
         print("Pegasos testing complete...")
     
-    
+    """
+    if(run_libsvm):
+        sys.path.append('./libsvm/python')
+        from svmutil import *
+        
+        libsvm = LibSVM(svm.train_x,svm.train_y,svm.test_x,svm.test_y)
+        #libsvm.run('-t 0 -c 1')
+        Cs = [0.00001,0.001,1,5,10]
+        for c in Cs:
+            libsvm.run('-t 2 -h 0 -g 0.05 -c '+str(c))
+            print("\n\n\n\n\n\n\n\n\n\n\n\n")
+        print("Time taken: %.2fs\n"%(calculate_time_elapsed()))
+    """
     
     
